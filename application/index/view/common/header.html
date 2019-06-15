@@ -1,0 +1,53 @@
+<div class="main-header">
+    <div class="logo-header">
+        <img src="/assets/custom/frontend/img/uugai.com_1550827832655.png" alt="">
+        <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse"
+                aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+    </div>
+    <nav class="navbar navbar-header navbar-expand-lg">
+        <div class="container-fluid">
+            <form class="navbar-left navbar-form nav-search mr-md-3" action="">
+                <div class="input-group">
+                    <input type="text" placeholder="Search ..." class="form-control">
+                    <div class="input-group-append">
+								<span class="input-group-text">
+									<i class="la la-search search-icon"></i>
+								</span>
+                    </div>
+                </div>
+            </form>
+            <ul class="topbar-nav ml-md-auto  align-items-center box-f-c-c ">
+                {if condition="is_login() eq true"}
+                <li class="topbarlist" ><a href="{:url('index/user/index')}">{$user.nickname}</a></li>
+                <li class="topbarlist" ><a href="{:url('user/logout')}">退出</a></li>
+                {else /}
+                    {if condition="'user'!=request()->controller()&&'login'!=request()->action()"}
+                    <li class="topbarlist" ><a href="javascript:;" class="login-frame" >登录</a></li>
+                    <li class="topbarlist" ><a data-url="{:url('index/user/register')}" class="btn-frame" >注册</a></li>
+                    {/if}
+                {/if}
+                <li class="topbarlist"><a href="javascript:;" onclick="store()"><i class="la la-star"></i>收藏本站</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<script type="text/javascript">
+    function store()
+    {
+        var sTitle = document.title;
+        var sURL = document.URL;
+        try{
+            window.external.addFavorite(sURL, sTitle);
+        }catch (e){
+            try{
+                window.sidebar.addPanel(sTitle, sURL, "");
+            }catch (e){
+                alert("加入收藏失败，请使用Ctrl+D进行添加");
+            }
+        } 
+    }
+</script>

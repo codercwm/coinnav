@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {include file="common/user_meta" /}
+    <style>
+        input[type="radio"]{
+            position:static !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <!--主体-->
+    <div id="content-container" class="container">
+        <div class="user-section login-section">
+            <div class="logon-tab clearfix"> <a class="active">{:__('Sign in')}</a> <a href="{:url('user/register')}">{:__('Sign up')}</a> </div>
+            <div class="login-main">
+                <form name="form" id="login-form" class="form-vertical" method="POST" action="{:url('user/emailLogin')}">
+                    <input type="hidden" name="referer_url" value="{:input('referer_url',0)}" />
+                    {:token()}
+                    <div class="form-group" data-type="email">
+                        <label class="control-label" for="email">{:__('Email')}</label>
+                        <div class="controls">
+                            <input class="form-control" id="email" type="text" name="email" value=""  data-rule="required(#type-email:checked);email; event=login, id={$user.id})" placeholder="{:__('Email')}" autocomplete="off">
+                            <div class="help-block"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="captcha">{:__('Captcha')}</label>
+                        <div class="controls">
+                            <div class="input-group">
+                                <input class="form-control " id="captcha" type="text" name="captcha"  data-rule="required;length(4);" autocomplete="off">
+                                <input type="hidden" name="event" value="login" id="">
+                                <span class="input-group-btn" style="padding:0;border:none;">
+                                    <a href="javascript:;" class="btn btn-info btn-captcha" data-url="{:url('api/ems/send')}" data-type="email" data-event="login">{:__('Send verification code')}</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div style="text-align: center;" class="controls">
+                            <a title="微信登录" href="{:addon_url('third/index/connect',[':platform'=>'wechat','referer_url'=>input('referer_url',0)])}">
+                                <i style="color:#62b900;" class="fa fa-2x fa-weixin"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div style="min-height:20px;" class="controls">
+                            <input type="hidden" name="keeplogin" value="1">
+                            <!--<div class="pull-right"><a href="javascript:;" class="btn-forgot">{:__('Forgot password')}</a></div>-->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">{:__('Sign in')}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+<!--公共script-->
+{include file="common/script" /}
+</html>

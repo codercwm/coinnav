@@ -1,0 +1,25 @@
+body {
+    background: #fff;
+}
+
+.wrap {
+    margin-top: 180px;
+}
+.login_qrcode img{
+    margin:auto;
+}
+.back-login a{
+    color:#fff;
+}
+.back-login{
+    margin-top: 15px;
+}
+a{
+    text-decoration:none!important;
+}
+.hint{
+    width:100%;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 20px;
+}

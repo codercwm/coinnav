@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="__ADDON__/lib/qrcode.min.js"></script>
+    <link href="__ADDON__/css/qrcode.css" rel="stylesheet">
+    <!-- Plugin CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/simple-line-icons@2.4.1/css/simple-line-icons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    <title>扫码登录</title>
+    <style>
+        .hint{
+            height:30px;
+        }
+        .login_qrcode{
+            margin-top:30px;
+        }
+        .back-login{
+            background:#1D62F0 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <h3 class="text-center"></h3>
+                <h4 class="text-center">请用微信扫描二维码</h4>
+                <div class="login_qrcode" id="login_qrcode"></div>
+                <div class="hint"></div>
+                <a href="{:url('index/User/login')}">
+                    <div class="btn btn-primary btn-block back-login">
+                        <i class="fa fa-arrow-left"></i>
+                        返回
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+<script>
+    var url = '{$authorize_url}';
+    new QRCode('login_qrcode', {
+        text: url,
+        correctLevel : QRCode.CorrectLevel.L
+    });
+    var platform = '{$platform}';
+    var state = '{$state}';
+
+    var referer_url = '{:urldecode(input("referer_url",""))}';
+    setInterval(function(){
+        $.ajax({
+            url:"{:addon_url('third/index/checkScan')}",
+            data:{"state":state},
+            success:function(res){
+                var code = res.data;
+                if(code){
+                    $('.hint').html('扫码成功...');
+                    var url = "/third/callback?state="+state+"&platform="+platform+"&code="+code;
+                    // location.href = url;
+                    $.ajax({
+                        url:url,
+                        success:function(res){
+                            if(1==res.code){
+
+                                if(''!=referer_url&&'0'!=referer_url){
+                                    top.location.href = referer_url;
+                                }else{
+                                    top.location.reload();
+                                }
+
+                            }else{
+                                $('.hint').html(res.msg);
+                            }
+
+                        }
+                    });
+
+                }
+            },
+            error:function(){
+                $('.hint').html('扫码失败，请刷新页面重试');
+            }
+
+        });
+    },2000);
+
+</script>
+</html>

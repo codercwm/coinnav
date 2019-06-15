@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file="common/meta" /}
+</head>
+
+<body>
+<div class="wrapper">
+    {include file="common/header" /}
+    <!-- 菜单 -->
+    {include file="common/nav" /}
+    <!--<div class="panel" style="width:1500px;border:2px solid #F00">-->
+    <!--</div>-->
+
+    <div class="main-panel">
+            <div class="content">
+                <div class="container-fluid">
+                    <!-- 热门推荐 -->
+
+                    {volist name="cat_info" id="vo"}
+                    <!--第一次遍历二级分类-->
+                    <h5 class="page-title recommend">
+                    <span>
+                        {$vo.name}<i class=""></i>
+                    </span>
+                    </h5>
+                    <div class="row">
+                        <!-- 最后遍历导航链接 -->
+                        {volist name="vo['childlist']" id="child_vo"}
+                        <div class="col-md-3">
+                            <div class="card card-stats card-warning">
+                                <div class="card-body "  style="background:white">
+                                    <div class="row">
+                                        <!--跳转链接-->
+                                        <!--<a href="{$child_vo.description}" target="view_window">-->
+                                        <div class="col-5">
+                                            <div class="icon-big log">
+                                                <!--链接的图标-->
+                                                <img src="{$child_vo.image}" alt="">
+                                            </div>
+                                        </div>
+                                        <!--</a>-->
+
+                                        <div class="col-7 d-flex align-items-center">
+                                            <div class="numbers">
+                                                <input type="hidden" class="url_id" value="{$child_vo.id}">
+                                                <i class="<?php if($child_vo['is_add'] == 1){ echo 'glyphicon glyphicon-star'; }else{ echo 'glyphicon glyphicon-star-empty'; } ?> star" onclick="_self(this)"></i>
+                                                <!--链接名称-->
+                                                <a href="{$child_vo.description}" target="view_window">
+                                                    <p class="card-category" style="color: #0d0d0d">{$child_vo.name}</p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/volist}
+                    </div>
+                    <hr>
+                    {/volist}
+                    <!-- {include file="common/footer" /} -->
+                </div>
+            </div>
+        </div>
+</body>
+{include file="common/script" /}
+<!--引入外部js-->
+<script src="__CDN__/assets/js/myjs/self.js"></script>
+</html>
